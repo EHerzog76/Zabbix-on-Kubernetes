@@ -16,7 +16,7 @@ This version is based on:  https://github.com/zabbix/zabbix-docker/tree/5.4/Dock
 
 ## HowTo:
 ### Build:
-`docker build -t zabbix-proxy-sqlite3-py3:alpine-5.4-latest --build-arg VCS_REF="5.4.10" --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` -f Dockerfile .`
+``docker build -t zabbix-proxy-sqlite3-py3:alpine-5.4-latest --build-arg VCS_REF="5.4.10" --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` -f Dockerfile .``
 
 `docker image ls`
 ```
