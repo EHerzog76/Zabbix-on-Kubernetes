@@ -1,0 +1,90 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-zabbix-web
+  namespace: ${AppNS}
+spec:
+  #externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  type: ClusterIP
+  sessionAffinity: None
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 8443
+  selector:
+    app: zabbix-web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zabbix-web
+  namespace: ${AppNS}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zabbix-web
+  template:
+    metadata:
+      labels:
+        app: zabbix-web
+    spec:
+      volumes:
+        - name: mnt-sslnginx
+          persistentVolumeClaim:
+             claimName: pvc-zbx-nginx
+      containers:
+      - image: ${K8SREPO}/zabbix-web-apache-pgsql:alpine-5.4.5
+        name: zabbix-web
+        imagePullPolicy: IfNotPresent
+        env:
+        - name:  ZBX_SERVER_HOST
+          value: "svc-zabbix-server.${AppNS}.svc.${K8SDOMAIN}"
+        - name: DB_SERVER_HOST
+          value: "${DBHOST}"
+        - name: POSTGRES_USER
+          value: "${DBUSER}"
+        - name: POSTGRES_PASSWORD
+          value: "${DBPWD}"
+        - name: POSTGRES_DB
+          value: "${DBNAME}"
+        - name: DB_SERVER_PORT
+          value: "5432"
+        - name: TZ
+          value: "Europe/Vienna"
+        - name: ZBX_SERVER_NAME
+          value: "PostAG-Zabbix"
+        - name: ZBX_MAXEXECUTIONTIME
+          value: "300"
+        - name: ZBX_MEMORYLIMIT
+          value: "512M"
+        - name: ZBX_POSTMAXSIZE
+          value: "32M"
+        - name: ZBX_UPLOADMAXFILESIZE
+          value: "200M"
+        - name: ZBX_MAXINPUTTIME
+          value: "300"
+        - name: ZBX_SESSION_NAME
+          value: "zbxpost_sessionid"
+        - name: PHP_FPM_PM
+          value: "dynamic"
+        - name: PHP_FPM_PM_MAX_CHILDREN
+          value: "50"
+        - name: PHP_FPM_PM_START_SERVERS
+          value: "5"
+        - name: PHP_FPM_PM_MIN_SPARE_SERVERS
+          value: "5"
+        - name: PHP_FPM_PM_MAX_SPARE_SERVERS
+          value: "35"
+        - name: PHP_FPM_PM_MAX_REQUESTS
+          value: "0"
+        volumeMounts:
+          - mountPath: "/etc/ssl/apache2"
+            name: mnt-sslnginx

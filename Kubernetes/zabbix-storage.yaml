@@ -1,0 +1,78 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-zbx-externalscripts
+  namespace: ${AppNS}
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: ${SCNAME}
+  resources:
+    requests:
+      storage: 10Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-zbx-mibs
+  namespace: ${AppNS}
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: ${SCNAME}
+  resources:
+    requests:
+      storage: 100Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-zbx-alertscripts
+  namespace: ${AppNS}
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: ${SCNAME}
+  resources:
+    requests:
+      storage: 10Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-zbx-snmptraps
+  namespace: ${AppNS}
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: ${SCNAME}
+  resources:
+    requests:
+      storage: 100Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-zbx-modules
+  namespace: ${AppNS}
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: ${SCNAME}
+  resources:
+    requests:
+      storage: 100Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-zbx-nginx
+  namespace: ${AppNS}
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: ${SCNAME}
+  resources:
+    requests:
+      storage: 10Mi

@@ -1,0 +1,160 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: zabbix
+    tier: proxy
+  name: zabbix-proxy-sqlite3
+  namespace: ${AppNS}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zabbix
+      name: zabbix-proxy-sqlite3
+  serviceName: zabbix-proxy-sqlite3
+  template:
+    metadata:
+      labels:
+        app: zabbix
+        name: zabbix-proxy-sqlite3
+    spec:
+      containers:
+      - env:
+        - name: ZBX_PROXYMODE
+          value: "0"
+        - name: ZBX_SERVER_HOST
+          value: svc-zabbix-server.${AppNS}.svc.${K8SDOMAIN}
+        - name: ZBX_SERVER_PORT
+          value: "10051"
+        - name: ZBX_HOSTNAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: ZBX_ENABLEREMOTECOMMANDS
+          value: "1"
+        - name: ZBX_LOGREMOTECOMMANDS
+          value: "1"
+        - name: ZBX_HOSTNAMEITEM
+        - name: ZBX_DEBUGLEVEL
+          value: "3"
+        - name: ZBX_PROXYLOCALBUFFER
+        - name: ZBX_PROXYOFFLINEBUFFER
+        - name: ZBX_PROXYHEARTBEATFREQUENCY
+          value: "60"
+        - name: ZBX_CONFIGFREQUENCY
+          value: "3600"
+        - name: ZBX_DATASENDERFREQUENCY
+          value: "1"
+        - name: ZBX_STARTPREPROCESSORS
+          value: "3"
+        - name: ZBX_STARTPOLLERS
+        - name: ZBX_IPMIPOLLERS
+        - name: ZBX_STARTPOLLERSUNREACHABLE
+        - name: ZBX_STARTTRAPPERS
+        - name: ZBX_STARTPINGERS
+          value: "1"
+        - name: ZBX_STARTDISCOVERERS
+        - name: ZBX_STARTHISTORYPOLLERS
+          value: "1"
+        - name: ZBX_STARTHTTPPOLLERS
+        - name: ZBX_JAVAGATEWAY_ENABLE
+          value: "true"
+        - name: ZBX_JAVAGATEWAY
+          value: zabbix-java-gateway
+        - name: ZBX_JAVAGATEWAYPORT
+          value: "10052"
+        - name: ZBX_STARTJAVAPOLLERS
+          value: "5"
+        - name: ZBX_STARTVMWARECOLLECTORS
+        - name: ZBX_VMWAREFREQUENCY
+        - name: ZBX_VMWAREPERFFREQUENCY
+        - name: ZBX_VMWARECACHESIZE
+        - name: ZBX_VMWARETIMEOUT
+        - name: ZBX_ENABLE_SNMP_TRAPS
+          value: "false"
+        - name: ZBX_HOUSEKEEPINGFREQUENCY
+        - name: ZBX_CACHESIZE
+          value: 256M
+        - name: ZBX_STARTDBSYNCERS
+          value: "4"
+        - name: ZBX_HISTORYCACHESIZE
+          value: 64M
+        - name: ZBX_HISTORYINDEXCACHESIZE
+          value: 32M
+        - name: ZBX_TIMEOUT
+          value: "15"
+        - name: ZBX_TRAPPERIMEOUT
+        - name: ZBX_UNREACHABLEPERIOD
+        - name: ZBX_UNAVAILABLEDELAY
+        - name: ZBX_UNREACHABLEDELAY
+        - name: ZBX_LOGSLOWQUERIES
+        - name: ZBX_LOADMODULE
+        - name: ZBX_TLSCONNECT
+          value: unencrypted
+        - name: ZBX_TLSACCEPT
+          value: unencrypted
+        - name: ZBX_TLSCAFILE
+        - name: ZBX_TLSCRLFILE
+        - name: ZBX_TLSSERVERCERTISSUER
+        - name: ZBX_TLSSERVERCERTSUBJECT
+        - name: ZBX_TLSCERTFILE
+        - name: ZBX_TLSKEYFILE
+        - name: ZBX_TLSPSKIDENTITY
+        - name: ZBX_TLSPSKFILE
+        - name: ZBX_TLSCIPHERALL
+        - name: ZBX_TLSCIPHERALL13
+        - name: ZBX_TLSCIPHERCERT
+        - name: ZBX_TLSCIPHERCERT13
+        - name: ZBX_TLSCIPHERPSK
+        - name: ZBX_TLSCIPHERPSK13
+        - name: DEBUG_MODE
+          value: "false"
+        image: ${K8SREPO}/zabbix-proxy-sqlite3-py3:alpine-5.4-latest
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 10051
+          timeoutSeconds: 3
+        name: zabbix-proxy-sqlite3
+        ports:
+        - containerPort: 10051
+          name: zabbix-trapper
+          protocol: TCP
+        resources: {}
+        securityContext:
+          capabilities: {}
+          privileged: false
+        startupProbe:
+          failureThreshold: 40
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: 10051
+          timeoutSeconds: 3
+        volumeMounts:
+        - mountPath: /var/lib/zabbix/db_data
+          name: proxy-sqlite-data
+        - mountPath: /usr/lib/zabbix/externalscripts
+          name: mnt-externalscripts
+        - mountPath: /var/lib/zabbix/mibs
+          name: mnt-mibs
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - emptyDir: {}
+        name: proxy-sqlite-data
+      - name: mnt-externalscripts
+        persistentVolumeClaim:
+          claimName: pvc-zbx-externalscripts
+      - name: mnt-mibs
+        persistentVolumeClaim:
+          claimName: pvc-zbx-mibs
+  updateStrategy:
+    type: RollingUpdate
