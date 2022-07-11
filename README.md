@@ -39,4 +39,23 @@ zabbix-proxy-sqlite3-py3                            alpine-5.4-latest   ********
 `docker push ${registry_address}:${registry_port}/zabbix-proxy-sqlite3-py3:alpine-5.4-latest`  
 
 ### Kubernetes config:
-`kubectl -n YOUR-NAMESPACE apply -f zabbix-proxy-sqlite3-StatefulSet.yaml`  
+`git clone https://github.com/EHerzog76/Zabbix-on-Kubernetes.git`  
+`cd Zabbix-on-Kubernetes`  
+`cd Kubernetes`  
+`chmod +x zabbix-install.sh`  
+`chmod +x kubectlwithenv.sh`  
+#### Edit zabbix-install.sh parameters for your environments:
+<ul>
+<li>DoNotApply="0"      1...Show config only</li>
+<li>K8SDOMAIN           cluster.local  is the default-domain</li>
+<li>K8SREPO             Name of the registry e.g.: private-registry:5000  or  
+                                    zabbix   if you use it from hub.docker.com</li>
+<li>AppNS               Namespace</li>
+<li>DBHOST</li>
+<li>DBUSER</li>
+<li>DBPWD</li>
+<li>DBNAME</li>
+<li>SCNAME              Name of Storageclass</li>
+</ul>
+
+`zabbix-install.sh`  
