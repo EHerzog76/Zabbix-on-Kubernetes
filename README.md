@@ -46,16 +46,16 @@ zabbix-proxy-sqlite3-py3                            alpine-5.4-latest   ********
 `chmod +x kubectlwithenv.sh`  
 #### Edit zabbix-install.sh parameters for your environments:
 <ul>
-<li>DoNotApply="0"......1 => Show config only</li>
-<li>K8SDOMAIN...........cluster.local  is the default-domain</li>
-<li>K8SREPO.............Name of the registry e.g.: private-registry:5000  or  
+<li>DoNotApply="0"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 => Show config only</li>
+<li>K8SDOMAIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cluster.local  is the default-domain</li>
+<li>K8SREPO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name of the registry e.g.: private-registry:5000  or  
                                     zabbix   if you use it from hub.docker.com</li>
-<li>AppNS...............Namespace</li>
+<li>AppNS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Namespace</li>
 <li>DBHOST</li>
 <li>DBUSER</li>
 <li>DBPWD</li>
 <li>DBNAME</li>
-<li>SCNAME..............Name of Storageclass</li>
+<li>SCNAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name of Storageclass</li>
 </ul>
 
 `zabbix-install.sh`  
