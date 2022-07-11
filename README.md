@@ -15,8 +15,16 @@ This version is based on:  https://github.com/zabbix/zabbix-docker/tree/5.4/Dock
     with python3 and easysnmp.  
 
 ## HowTo:
+### Dockerfile edit base version:
+ARG MAJOR_VERSION=6.2  
+ARG ZBX_VERSION=${MAJOR_VERSION}.0  
+
 ### Build:
-``docker build -t zabbix-proxy-sqlite3-py3:alpine-5.4-latest --build-arg VCS_REF="5.4.10" --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` -f Dockerfile .``
+``MAJOR_VERSION=`cat Dockerfile | grep "ARG MAJOR_VERSION" | head -n1 | cut -f2 -d"="` ``
+``MINOR_VERSION=`cat Dockerfile | grep "ARG ZBX_VERSION" | head -n1 | cut -f2 -d"."` ``
+`VCS_REF=$MAJOR_VERSION.$MINOR_VERSION`
+
+``docker build -t zabbix-proxy-sqlite3-py3:alpine-5.4-latest --build-arg VCS_REF="$VCS_REF" --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` -f Dockerfile .``
 
 `docker image ls`
 ```

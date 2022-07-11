@@ -1,0 +1,26 @@
+docopt>=0.6.1
+PyYAML>=3.10
+requests>=2.20.0
+texttable>=0.9.0
+websocket-client>=0.32.0
+distro>=1.5.0
+docker[ssh]>=5
+dockerpty>=0.4.1
+jsonschema>=2.5.1
+python-dotenv>=0.13.0
+
+[:python_version < "3.5"]
+backports.ssl_match_hostname>=3.5
+
+[:python_version < "3.8"]
+cached-property>=1.2.0
+
+[:sys_platform == "win32"]
+colorama>=0.4
+
+[socks]
+PySocks!=1.5.7,>=1.5.6
+
+[tests]
+ddt>=1.2.2
+pytest<6
