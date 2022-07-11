@@ -55,7 +55,7 @@ zabbix-proxy-sqlite3-py3                            alpine-5.4-latest   ********
 <li>DBUSER</li>
 <li>DBPWD</li>
 <li>DBNAME</li>
-<li>SCNAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name of Storageclass</li>
+<li>SCNAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name of Storageclass</li>
 </ul>
 
 `zabbix-install.sh`  
