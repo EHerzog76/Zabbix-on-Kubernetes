@@ -1,6 +1,15 @@
 # Zabbix-on-Kubernetes
 Zabbix on Kubernetes is a repository to add some features and software to the origanal Docker-Images from Zabbix.  
-And the Kubernetes StatefulSet´s and Deployment´s needed to run Zabbix on Kubernetes.
+And the Kubernetes StatefulSet´s and Deployment´s needed to run Zabbix on Kubernetes.  
+<ul>
+<li>zabbix-server</li>
+<li>zabbix-web</li>
+<li>zabbix-proxy</li>
+<li>zabbix-web-service => will follow</li>
+<li>zabbix-storage => Storage definitions</li>
+</ul>  
+crunchy-postgres shows you how you can use the Crunchy-Postgres-Operator with the TimescaleDB-Extension and license "timescale".  
+In the original version the license "Apache" is used, with this license type you can not use the compression feature.  
 
 # zabbix-server
 Zabbix-Server with  
@@ -67,3 +76,16 @@ zabbix-proxy-sqlite3-py3                            alpine-5.4-latest   ********
 </ul>
 
 `zabbix-install.sh`  
+
+## crunchy-postgres
+Optional if you use the Crunchy-Postgres-Operator and you will use the TimescaleDB-Extension with compression.  
+Edit the Dockerfile for your version.  
+`docker build -t crunchydata/crunchy-postgres:ubi8-13.7-0 -f Dockerfile .`  
+  
+In your Postgres-Cluster config add the following lines:  
+`patroni:
+    dynamicConfiguration:
+      postgresql:
+        parameters:
+          shared_preload_libraries: timescaledb
+          timescaledb.license: timescale  # instead of apache by default in crunchy`  
