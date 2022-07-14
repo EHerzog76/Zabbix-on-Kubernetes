@@ -45,6 +45,8 @@ spec:
         name: zabbix-web
         imagePullPolicy: IfNotPresent
         env:
+        - name: ZBX_DENY_GUI_ACCESS
+          value: "false"
         - name:  ZBX_SERVER_HOST
           value: "svc-zabbix-server.${AppNS}.svc.${K8SDOMAIN}"
         - name: DB_SERVER_HOST

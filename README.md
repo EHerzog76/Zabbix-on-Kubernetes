@@ -82,6 +82,18 @@ Optional if you use the Crunchy-Postgres-Operator and you will use the Timescale
 Edit the Dockerfile for your version.  
 `docker build -t crunchydata/crunchy-postgres:ubi8-13.7-0 -f Dockerfile .`  
   
+If you implement in this way a TimescalDB-Upgragde, then see in the docs:  
+https://docs.timescale.com/timescaledb/latest/how-to-guides/upgrades/#upgrade-timescaledb  
+For a Minor upgrade:  
+====================  
+`SELECT default_version, installed_version FROM pg_available_extensions where name = 'timescaledb';
+ default_version | installed_version
+-----------------+-------------------
+ 2.6.1           |`  
+  
+`psql -X`
+`ALTER EXTENSION timescaledb UPDATE;`  
+  
 In your Postgres-Cluster config add the following lines:  
 `patroni:
     dynamicConfiguration:
